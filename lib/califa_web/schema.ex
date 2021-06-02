@@ -10,10 +10,13 @@ defmodule CalifaWeb.Schema do
   import_types CalifaWeb.Schema.Queries.MenuQueries
   import_types CalifaWeb.Schema.Queries.Searches
 
-  def middleware(middleware, _field, %{identifier: :mutation}) do
-    middleware ++ [CalifaWeb.Schema.Middlewares.HandleChangesetErrors]
+  def middleware(middleware, _field, %{identifier: type}) when type in [:query, :mutation] do
+    middleware ++ [CalifaWeb.Schema.Middlewares.ErrorHandler]
   end
-  def middleware(middleware, _field, _object), do: middleware
+
+  def middleware(middleware, _field, _object) do
+    middleware
+  end
 
   query do
     import_fields :menu_queries

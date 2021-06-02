@@ -6,8 +6,12 @@ defmodule CalifaWeb.Schema.Types.CustomerTypes do
     field :email, :string
     field :last_name, :string
     field :name, :string
-    # field :orders, list_of(:orders) do
-      # resolve &Resolvers.Customers.customer_orders/3
-    # end
+  end
+
+  @desc "Object to create a customer"
+  input_object :customer_input do
+    field :email, :string
+    field :last_name, :string
+    field :name, :string
   end
 end
