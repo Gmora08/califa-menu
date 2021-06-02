@@ -5,8 +5,6 @@ defmodule CalifaWeb.Schema.Middlewares.ErrorHandler do
 
   @impl true
   def call(resolution, _config) do
-    IO.inspect("IMMM HEEERRRREEEE")
-
     errors =
       resolution.errors
       |> Enum.map(&Califa.Utils.Error.normalize/1)

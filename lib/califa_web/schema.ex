@@ -4,6 +4,7 @@ defmodule CalifaWeb.Schema do
   import_types CalifaWeb.Schema.Interfaces
   import_types CalifaWeb.Schema.Mutations.{Customer, Menu, Orders}
   import_types CalifaWeb.Schema.Queries.{MenuQueries, Orders, Searches}
+  import_types CalifaWeb.Schema.Subscriptions.Orders
   import_types CalifaWeb.Schema.Types.{
     CustomerTypes,
     MenuTypes,
@@ -32,10 +33,6 @@ defmodule CalifaWeb.Schema do
   end
 
   subscription do
-    field :new_order, :order do
-      config fn _args, _info ->
-        {:ok, topic: "*"}
-      end
-    end
+    import_fields :order_subscriptions
   end
 end
