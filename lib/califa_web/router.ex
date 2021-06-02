@@ -5,8 +5,11 @@ defmodule CalifaWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", CalifaWeb do
+  scope "/" do
     pipe_through :api
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: CalifaWeb.Schema
+    forward "/api", Absinthe.Plug, schema: CalifaWeb.Schema, interface: :simple
   end
 
   # Enables LiveDashboard only for development
