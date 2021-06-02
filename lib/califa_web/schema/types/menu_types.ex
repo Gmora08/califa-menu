@@ -29,7 +29,7 @@ defmodule CalifaWeb.Schema.Types.MenuTypes do
     field :name, non_null(:string)
     field :portion, non_null(:portion)
     field :price, non_null(:money)
-    field :category, non_null(:id)
+    field :category_id, non_null(:id)
   end
 
   @desc """

@@ -5,7 +5,7 @@ defmodule Califa.Menu.Dish do
   schema "dishes" do
     field :name, :string
     field :portion, :integer
-    field :price, :integer
+    field :price, Money.Ecto.Amount.Type
     many_to_many(
       :orders,
       Califa.Orders.Order,
