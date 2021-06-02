@@ -14,5 +14,6 @@ defmodule Califa.Menu.Category do
     category
     |> cast(attrs, [:name])
     |> validate_required([:name])
+    |> unique_constraint(:name, name: :name_unique_index, message: "Category already exists")
   end
 end
