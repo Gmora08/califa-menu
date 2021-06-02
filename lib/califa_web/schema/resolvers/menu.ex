@@ -1,9 +1,9 @@
 defmodule CalifaWeb.Schema.Resolvers.Menu do
   alias Califa.Repo
-  alias Califa.Menu
+  alias Califa.{Menu, Orders}
+  alias Califa.Orders.Order
 
   def categories(_parent, args, _res) do
-    IO.inspect(args, label: "Menu args ==>")
     {:ok, Menu.list_categories(args)}
   end
 
@@ -15,8 +15,11 @@ defmodule CalifaWeb.Schema.Resolvers.Menu do
     Menu.create_dish(params)
   end
 
+  def dishes(%Order{} = order, _args, res) do
+    Orders.list_order_dishes(order.id)
+  end
+
   def dishes(parent, args, _res) do
-    IO.inspect(parent, label: "Dishes parent ===>")
     {:ok, Menu.list_dishes(args, parent)}
   end
 

@@ -7,6 +7,7 @@ defmodule Califa.Orders do
   alias Califa.Repo
 
   alias Califa.Orders.OrderStatus
+  alias Califa.Menu.Dish
 
   @doc """
   Returns the list of order_status.
@@ -211,6 +212,14 @@ defmodule Califa.Orders do
   """
   def list_order_dish do
     Repo.all(OrderDish)
+  end
+
+  def list_order_dishes(order_id) do
+    OrderDish
+    |> where([od], od.order_id == ^order_id)
+    |> join(:inner, [od], d in Dish, on: d.id == od.dish_id)
+    |> select([_od, d], d)
+    |> Repo.all()
   end
 
   @doc """
