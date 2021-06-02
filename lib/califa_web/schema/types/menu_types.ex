@@ -6,6 +6,8 @@ defmodule CalifaWeb.Schema.Types.MenuTypes do
 
   @desc "Dishes categories"
   object :category do
+    interfaces [:search_by_id]
+
     field :id, :id
     field :name, :string
     field :dishes, list_of(:dish) do
@@ -15,6 +17,8 @@ defmodule CalifaWeb.Schema.Types.MenuTypes do
 
   @desc "Dishes that are on the menu"
   object :dish do
+    interfaces [:search_by_id]
+
     field :id, :id
     field :name, :string
     field :portion, :portion
