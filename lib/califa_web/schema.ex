@@ -3,7 +3,7 @@ defmodule CalifaWeb.Schema do
 
   import_types CalifaWeb.Schema.Interfaces
   import_types CalifaWeb.Schema.Mutations.{Customer, Menu}
-  import_types CalifaWeb.Schema.Queries.{MenuQueries, Searches}
+  import_types CalifaWeb.Schema.Queries.{MenuQueries, Orders, Searches}
   import_types CalifaWeb.Schema.Types.{
     CustomerTypes,
     MenuTypes,
@@ -21,6 +21,7 @@ defmodule CalifaWeb.Schema do
 
   query do
     import_fields :menu_queries
+    import_fields :order_queries
     import_fields :search_queries
   end
 

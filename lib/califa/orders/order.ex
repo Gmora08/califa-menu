@@ -1,9 +1,9 @@
-defmodule Califa.Orders.Order do
+  defmodule Califa.Orders.Order do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "orders" do
-    field :total, :integer
+    field :total, Money.Ecto.Amount.Type
     many_to_many(
       :dishes,
       Califa.Menu.Dish,
