@@ -1,14 +1,15 @@
 defmodule CalifaWeb.Schema do
   use Absinthe.Schema
 
-  import_types CalifaWeb.Schema.Types.CustomerTypes
-  import_types CalifaWeb.Schema.Types.MenuTypes
-  import_types CalifaWeb.Schema.Types.Money
-  import_types CalifaWeb.Schema.Types.OrdersTypes
-  import_types CalifaWeb.Schema.Mutations.Menu
   import_types CalifaWeb.Schema.Interfaces
-  import_types CalifaWeb.Schema.Queries.MenuQueries
-  import_types CalifaWeb.Schema.Queries.Searches
+  import_types CalifaWeb.Schema.Mutations.{Customer, Menu}
+  import_types CalifaWeb.Schema.Queries.{MenuQueries, Searches}
+  import_types CalifaWeb.Schema.Types.{
+    CustomerTypes,
+    MenuTypes,
+    Money,
+    OrdersTypes
+  }
 
   def middleware(middleware, _field, %{identifier: type}) when type in [:query, :mutation] do
     middleware ++ [CalifaWeb.Schema.Middlewares.ErrorHandler]
@@ -24,6 +25,7 @@ defmodule CalifaWeb.Schema do
   end
 
   mutation do
+    import_fields :customer_mutations
     import_fields :menu_mutations
   end
 end

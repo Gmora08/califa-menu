@@ -16,5 +16,6 @@ defmodule Califa.Customers.Customer do
     customer
     |> cast(attrs, [:name, :last_name, :email])
     |> validate_required([:name, :last_name, :email])
+    |> unique_constraint(:email, name: :email_unique_index, message: "already exists")
   end
 end
