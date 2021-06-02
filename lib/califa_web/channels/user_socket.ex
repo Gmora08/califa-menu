@@ -1,5 +1,6 @@
 defmodule CalifaWeb.UserSocket do
   use Phoenix.Socket
+  use Absinthe.Phoenix.Socket, schema: CalifaWeb.Schema
 
   ## Channels
   # channel "room:*", CalifaWeb.RoomChannel

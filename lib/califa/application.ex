@@ -14,7 +14,8 @@ defmodule Califa.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Califa.PubSub},
       # Start the Endpoint (http/https)
-      CalifaWeb.Endpoint
+      CalifaWeb.Endpoint,
+      {Absinthe.Subscription, [CalifaWeb.Endpoint]},
       # Start a worker by calling: Califa.Worker.start_link(arg)
       # {Califa.Worker, arg}
     ]

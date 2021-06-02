@@ -15,7 +15,8 @@ defmodule CalifaWeb.Schema.Resolvers.Orders do
 
     with {:ok, %{ids: _, total: total}} <- Orders.get_dishes_for_order(dish_ids),
          params <- Map.put(params, :total, total),
-         {:ok, %{order: order} = _} <- Orders.create_order_transaction(params) do
+         {:ok, %{order: order} = _} <- Orders.create_order_transaction(params),
+         :ok <- Absinthe.Subscription.publish(CalifaWeb.Endpoint, order, new_order: "*") do
           {:ok, order}
     else
       {:error, :dishes_not_found} -> {:error, "Invalid dishes names"}

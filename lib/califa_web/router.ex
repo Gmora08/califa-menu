@@ -8,7 +8,7 @@ defmodule CalifaWeb.Router do
   scope "/" do
     pipe_through :api
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: CalifaWeb.Schema
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: CalifaWeb.Schema, socket: CalifaWeb.UserSocket
     forward "/api", Absinthe.Plug, schema: CalifaWeb.Schema, interface: :simple
   end
 

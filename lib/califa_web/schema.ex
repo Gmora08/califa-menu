@@ -30,4 +30,12 @@ defmodule CalifaWeb.Schema do
     import_fields :menu_mutations
     import_fields :order_mutations
   end
+
+  subscription do
+    field :new_order, :order do
+      config fn _args, _info ->
+        {:ok, topic: "*"}
+      end
+    end
+  end
 end
