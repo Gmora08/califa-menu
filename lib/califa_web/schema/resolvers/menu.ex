@@ -15,8 +15,8 @@ defmodule CalifaWeb.Schema.Resolvers.Menu do
     Menu.create_dish(params)
   end
 
-  def dishes(%Order{} = order, _args, res) do
-    Orders.list_order_dishes(order.id)
+  def dishes(%Order{} = order, _args, _res) do
+    {:ok, Orders.list_order_dishes(order.id)}
   end
 
   def dishes(parent, args, _res) do
