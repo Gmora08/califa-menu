@@ -302,4 +302,36 @@ defmodule Califa.Orders do
   def change_order_dish(%OrderDish{} = order_dish, attrs \\ %{}) do
     OrderDish.changeset(order_dish, attrs)
   end
+
+  def get_dishes_for_order(dish_ids) do
+    Dish
+    |> where([d], d.id in ^dish_ids)
+    |> select([d], %{
+      total: fragment("coalesce(sum(?), 0)", d.price),
+      ids: fragment("array_agg(?)", d.id)
+    })
+    |> Repo.one()
+    |> case do
+      %{ids: nil} = _ ->
+        {:error, :dishes_not_found}
+      data ->
+        {:ok, data}
+    end
+  end
+
+  def create_order_transaction(params) do
+    multi =
+      Ecto.Multi.new()
+      |> Ecto.Multi.insert(:order, Order.changeset(%Order{}, params))
+
+      multi = Enum.reduce(params.dishes, multi, fn
+        dish, transaction ->
+          Ecto.Multi.run(transaction, :"#{dish.dish_id}", fn _repo, %{order: order} ->
+            params = %{order_id: order.id, dish_id: dish.dish_id, quantity: dish.quantity}
+            create_order_dish(params)
+          end)
+      end)
+
+    Repo.transaction(multi)
+  end
 end

@@ -2,7 +2,7 @@ defmodule CalifaWeb.Schema do
   use Absinthe.Schema
 
   import_types CalifaWeb.Schema.Interfaces
-  import_types CalifaWeb.Schema.Mutations.{Customer, Menu}
+  import_types CalifaWeb.Schema.Mutations.{Customer, Menu, Orders}
   import_types CalifaWeb.Schema.Queries.{MenuQueries, Orders, Searches}
   import_types CalifaWeb.Schema.Types.{
     CustomerTypes,
@@ -28,5 +28,6 @@ defmodule CalifaWeb.Schema do
   mutation do
     import_fields :customer_mutations
     import_fields :menu_mutations
+    import_fields :order_mutations
   end
 end
