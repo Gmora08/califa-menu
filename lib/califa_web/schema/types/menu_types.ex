@@ -11,7 +11,8 @@ defmodule CalifaWeb.Schema.Types.MenuTypes do
     field :id, :id
     field :name, :string
     field :dishes, list_of(:dish) do
-      resolve &Resolvers.Menu.category_dishes/3
+      arg :dish_filter, :dishes_filter
+      resolve &Resolvers.Menu.dishes/3
     end
   end
 
@@ -28,12 +29,38 @@ defmodule CalifaWeb.Schema.Types.MenuTypes do
     end
   end
 
+  @desc "Filter options for the menu"
+  input_object :menu_filter do
+    @desc "Matching category"
+    field :category, :menu_categories
+  end
+
+  @desc "Filter dishes options"
+  input_object :dishes_filter do
+    @desc "Dishes below price"
+    field :below_price, :money
+
+    @desc "Dishes over price"
+    field :over_price, :money
+  end
+
   @desc "Object to create a dish"
   input_object :dish_input do
     field :name, non_null(:string)
     field :portion, non_null(:portion)
     field :price, non_null(:money)
     field :category_id, non_null(:id)
+  end
+
+  enum :menu_categories do
+    value :entradas
+    value :tacos
+    value :sopas
+    value :costras
+    value :crateres
+    value :bebidas
+    value :quesadillas
+    value :postres
   end
 
   @desc """

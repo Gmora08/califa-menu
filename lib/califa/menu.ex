@@ -17,8 +17,19 @@ defmodule Califa.Menu do
       [%Category{}, ...]
 
   """
-  def list_categories do
-    Repo.all(Category)
+  def list_categories(filters \\ %{}) do
+
+    filters
+    |> Enum.reduce(Category, fn
+      {_, nil}, query -> query
+      {:filter, filter}, query ->
+
+        IO.inspect(filter, label: "Filters xx==>")
+        IO.inspect(query, label: "Filters xx==>")
+
+        filter_category_with(query, filter)
+    end)
+    |> Repo.all()
   end
 
   @doc """
@@ -113,8 +124,15 @@ defmodule Califa.Menu do
       [%Dish{}, ...]
 
   """
-  def list_dishes do
-    Repo.all(Dish)
+  def list_dishes(filters \\ %{}, category \\ nil) do
+    filters
+    |> Enum.reduce(Dish, fn
+      {_, nil}, query -> query
+      {:dish_filter, dish_filters}, query ->
+        filter_dish_with(query, dish_filters)
+    end)
+    |> where_dish_category(category)
+    |> Repo.all()
   end
 
   @doc """
@@ -197,4 +215,40 @@ defmodule Califa.Menu do
   def change_dish(%Dish{} = dish, attrs \\ %{}) do
     Dish.changeset(dish, attrs)
   end
+
+  defp filter_category_with(query, filters) do
+    filters
+    |> Enum.reduce(query, fn
+      {:category, category}, query ->
+        category = to_string(category)
+        where_category(query, category)
+    end)
+  end
+
+  defp where_category(query, category) do
+    from q in query, where: q.name == ^category
+  end
+
+  defp filter_dish_with(query, filters) do
+    filters
+    |> Enum.reduce(query, fn
+      {:below_price, price}, query ->
+        with_price(:below, price, query)
+      {:over_price, price}, query ->
+        with_price(:over, price, query)
+    end)
+  end
+
+  defp with_price(:below, price, query) do
+    from q in query, where: q.price <= ^price
+  end
+
+  defp with_price(:over, price, query) do
+    from q in query, where: q.price > ^price
+  end
+
+  defp where_dish_category(query, %Category{} = category) do
+    from q in query, where: q.category_id == ^category.id
+  end
+  defp where_dish_category(query, _), do: query
 end
